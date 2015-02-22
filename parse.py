@@ -4,17 +4,23 @@ from __future__ import division
 # create maps from states<->ints, actions<->ints
 # convert single reward to step rewards if applicable
 
-def parse(*args):
-    obs = args[0]
-    # obs and R, 1 reward per observation
-    # convert obs to include rewards each step
-    if len(args) > 1:
-        R = args[1]
-        for o in range(0, len(obs)):
-            totalReward = R[o]
-            stepReward = totalReward/len(obs[o])
-            for t in range(0, len(obs[o])):
-                obs[o][t].append(stepReward)
+def obs_with_reward(obs, R):
+    """Adds reward values to R
+
+    obs and R, 1 reward per observation
+    convert obs to include rewards each step
+    """
+    for o in range(0, len(obs)):
+        totalReward = R[o]
+        stepReward = totalReward/len(obs[o])
+        for t in range(0, len(obs[o])):
+            obs[o][t].append(stepReward)
+    return obs
+
+
+def parse(obs, R=None):
+    if R is not None:
+        obs = obs_with_reward(obs, R)
 
     # create maps from actions and states to integers
     actMap = []
