@@ -34,13 +34,15 @@ def example2():
 
     >>> example2()
     From these three paths, the learned strategy is: 
-    {'A': 'R', 'C': 'F', 'B': 'L', 'Prize': 'F', 'D': 'L'}
+    {0: 1, 1: 0, 2: 0, 3: 1, 4: 1}
     And the state-transition probability matrix is: 
     [[[1.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 1.0], [0.2, 0.2, 0.2, 0.2, 0.2]], [[0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2]], [[1.0, 0.0, 0.0, 0.0, 0.0], [0.2, 0.2, 0.2, 0.2, 0.2], [0.0, 0.0, 0.0, 1.0, 0.0], [0.2, 0.2, 0.2, 0.2, 0.2]], [[0.0, 0.0, 0.0, 0.0, 1.0], [0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2]], [[0.2, 0.2, 0.2, 0.2, 0.2], [1.0, 0.0, 0.0, 0.0, 0.0], [0.2, 0.2, 0.2, 0.2, 0.2], [0.0, 0.0, 0.0, 1.0, 0.0]]]
     """
+    # TODO change format to match original spec:
+    {'A': 'R', 'C': 'F', 'B': 'L', 'Prize': 'F', 'D': 'L'}
 
     obs = [obs1, obs2, obs3]
-    gamma = 1 #no discount
+    gamma = 1  # no discount
     rewards = [1, 0, 1]
 
     model = l.learn(obs, gamma, rewards)
@@ -51,7 +53,7 @@ def example2():
     print("And the state-transition probability matrix is: ")
     print(model[1])
 
-    #note that many transition probabilities are estimated as uniform because there isn't yet data
+    # note that many transition probabilities are estimated as uniform because there isn't yet data
 
 
 if __name__ == '__main__':
