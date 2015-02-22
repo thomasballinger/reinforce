@@ -3,26 +3,17 @@ import mdpmodel as mod
 import mdpsolve as sol
 
 
-def learn(*args):
+def learn(obs_, gamma=1, R=None):
     """Returns strategy and other data from observations
 
     takes 3d list of observations & reward list
     (if step-wise rewards not included in observations)
     [obs],[obs,gamma],[obs,gamma,R]"""
-    obs_ = args[0]
-    gamma = 1
-    if (len(args) > 1):
-        gamma = args[1]
-    if (len(args) > 2):
-        R = args[2]
-        parsed = par.parse(obs_, R)
+    if R is None:
+        stateMap, actMap, obs = par.parse(obs_)
     else:
-        parsed = par.parse(obs_)
-    # parsed = [stateMap,actionMap,observations]
+        stateMap, actMap, obs = par.parse(obs_, R)
 
-    stateMap = parsed[0]
-    actMap = parsed[1]
-    obs = parsed[2]
     model = mod.model(len(stateMap), len(actMap), obs)
 
     P = model[0]

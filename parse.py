@@ -3,6 +3,7 @@ from __future__ import division
 
 # create maps from states<->ints, actions<->ints
 # convert single reward to step rewards if applicable
+
 def parse(*args):
     obs = args[0]
     # obs and R, 1 reward per observation
