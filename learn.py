@@ -3,9 +3,12 @@ import mdpmodel as mod
 import mdpsolve as sol
 
 
-# takes 3d list of observations & reward list(if step-wise rewards not included in observations)
-# [obs],[obs,gamma],[obs,gamma,R]
 def learn(*args):
+    """Returns strategy and other data from observations
+
+    takes 3d list of observations & reward list
+    (if step-wise rewards not included in observations)
+    [obs],[obs,gamma],[obs,gamma,R]"""
     obs_ = args[0]
     gamma = 1
     if (len(args) > 1):
