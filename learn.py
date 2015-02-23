@@ -8,7 +8,12 @@ def learn(obs, gamma=1, R=None):
 
     takes 3d list of observations & reward list
     (if step-wise rewards not included in observations)
-    [obs],[obs,gamma],[obs,gamma,R]"""
+    [obs],[obs,gamma],[obs,gamma,R]
+
+    obs has the structure
+    [[[state, action, reward], [state, action, reward], ...],
+     [[state, action, reward], [state, action, reward], ...], ...]
+    """
     if R is not None:
         par.add_rewards_to_obs(obs, R)
     stateMap, actMap = par.add_states_and_actions(obs)
@@ -27,3 +32,7 @@ def learn(obs, gamma=1, R=None):
     # return strategy, transition matrix, reward
     results = [strat, model[0], model[1], stateMap]
     return results
+
+if __name__ == '__main__':
+    import example
+    example.example1()
