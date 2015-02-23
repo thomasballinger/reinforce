@@ -11,6 +11,8 @@ def add_rewards_to_obs(obs, R):
     obs and R, 1 reward per observation
     convert obs to include rewards each step
     """
+    if len(obs[0][0]) != 2:
+        raise ValueError("obs has wrong dimensions: %d", obs[0][0])
     for ob, totalReward in zip(obs, R):
         stepReward = totalReward/len(ob)
         for step in ob:
