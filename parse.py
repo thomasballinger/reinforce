@@ -5,7 +5,7 @@ convert single reward to step rewards if applicable
 """
 
 
-def add_rewards_to_obs(obs, R):
+def obs_with_rewards(obs, R):
     """Adds reward values to R
 
     obs and R, 1 reward per observation
@@ -13,10 +13,13 @@ def add_rewards_to_obs(obs, R):
     """
     if len(obs[0][0]) != 2:
         raise ValueError("obs has wrong dimensions: %d", obs[0][0])
+    new_obs = []
     for ob, totalReward in zip(obs, R):
+        new_obs.append([])
         stepReward = totalReward/len(ob)
         for step in ob:
-            step.append(stepReward)
+            new_obs[-1].append(step + [stepReward])
+    return new_obs
 
 
 def add_states_and_actions(obs, R=None):
@@ -24,7 +27,7 @@ def add_states_and_actions(obs, R=None):
 
     Returns state map and actions map, and adds states and actions to obs"""
     if R is not None:
-        add_rewards_to_obs(obs, R)
+        obs = obs_with_rewards(obs, R)
     stateMap = add_states_to_obs(obs)
     actMap = add_actions_to_obs(obs)
     return [stateMap, actMap]

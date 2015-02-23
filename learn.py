@@ -15,7 +15,7 @@ def learn(obs, gamma=1, R=None):
      [[state, action, reward], [state, action, reward], ...], ...]
     """
     if R is not None:
-        par.add_rewards_to_obs(obs, R)
+        obs = par.obs_with_rewards(obs, R)
     stateMap, actMap = par.add_states_and_actions(obs)
 
     model = mod.model(len(stateMap), len(actMap), obs)
@@ -35,4 +35,4 @@ def learn(obs, gamma=1, R=None):
 
 if __name__ == '__main__':
     import example
-    example.example1()
+    example.example2()
