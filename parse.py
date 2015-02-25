@@ -21,39 +21,35 @@ def obs_with_rewards(obs, R):
             for ob, totalReward in zip(obs, R)]
 
 
-def add_states_and_actions(obs, R=None):
+def number_states_and_actions(obs):
     """Augment 3D obs array with states and actions
 
     Returns state map and actions map, and adds states and actions to obs"""
-    if R is not None:
-        obs = obs_with_rewards(obs, R)
-    stateMap = add_states_to_obs(obs)
-    actMap = add_actions_to_obs(obs)
-    return [stateMap, actMap]
+
+    stateMap = get_state_map(obs)
+    state_num = {s: i for i, s in enumerate(stateMap)}
+    actionMap = get_action_map(obs)
+    action_num = {a: i for i, a in enumerate(actionMap)}
+
+    obs = [[[state_num[state], action_num[action], reward]
+            for state, action, reward in ob]
+           for ob in obs]
+
+    return stateMap, actionMap, obs
 
 
-def add_actions_to_obs(obs_with_rewards):
+def get_action_map(obs):
     """Adds actions to observations and return action map"""
-    # create maps from actions and states to integers
-    obs = obs_with_rewards
-    actMap = []
-    for ob in obs:
-        for step in ob:
-            action = step[1]
-            if (action not in actMap):
-                actMap.append(action)
-            step[1] = actMap.index(action)
-    return actMap
+    return uniq(step[1] for ob in obs for step in ob)
 
 
-def add_states_to_obs(obs_with_rewards):
+def get_state_map(obs):
     """Adds states to observations and return state map"""
-    obs = obs_with_rewards
-    stateMap = []
-    for ob in obs:
-        for step in ob:
-            state = step[0]
-            if (state not in stateMap):
-                stateMap.append(state)
-            step[0] = stateMap.index(state)
-    return stateMap
+    return uniq(step[0] for ob in obs for step in ob)
+
+
+def uniq(seq):
+    "Returns unique elements preserving order"
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]

@@ -16,7 +16,7 @@ def learn(obs, gamma=1, R=None):
     """
     if R is not None:
         obs = par.obs_with_rewards(obs, R)
-    stateMap, actMap = par.add_states_and_actions(obs)
+    stateMap, actMap, obs = par.number_states_and_actions(obs)
 
     model = mod.model(len(stateMap), len(actMap), obs)
 
