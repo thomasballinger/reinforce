@@ -7,6 +7,7 @@ def model(num_states, num_actions, obs):
     pcount = [[[0]*num_states
                for _ in range(num_actions)]
               for _ in range(num_states)]
+    # [total_reward, state_visit_count
     rcount = [[0, 0] for _ in range(num_states)]
 
     # count state and reward observations
@@ -26,16 +27,16 @@ def model(num_states, num_actions, obs):
             pcount[state][action][next_state] += 1
 
     # compute R[s]
-    R = [0]*num_states
-    for i in range(num_states):
-        R[i] = rcount[i][0]/rcount[i][1] if (rcount[i][1]) else (0)
+    R = [rcount[i][0]/rcount[i][1] if (rcount[i][1]) else (0)
+         for i in range(num_states)]
 
+    # P[initial_state][action][dest_state] = probability
     P = [[[0]*num_states for _ in range(num_actions)] for _ in range(num_states)]
     # compute P_sa[s']
-    for i in range(0, num_states):
-        for j in range(0, num_actions):
-            visits = sum(pcount[i][j])
+    for initial_state_p, initial_state_count in zip(P, pcount):
+        for action_p, action_count in zip(initial_state_p, initial_state_count):
+            visits = sum(action_count)
             for k in range(0, num_states):
-                P[i][j][k] = pcount[i][j][k]/visits if (visits) else (1/num_states)
+                action_p[k] = action_count[k] / visits if visits else 1 / num_states
 
     return [P, R]
