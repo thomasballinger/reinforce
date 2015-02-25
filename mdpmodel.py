@@ -1,4 +1,5 @@
 from __future__ import division
+from collections import Counter
 
 
 def model(num_states, num_actions, obs):
@@ -7,27 +8,20 @@ def model(num_states, num_actions, obs):
     pcount = [[[0]*num_states
                for _ in range(num_actions)]
               for _ in range(num_states)]
-    # [total_reward, state_visit_count
-    rcount = [[0, 0] for _ in range(num_states)]
+
+    state_visits = Counter(state for ob in obs for state, _, _ in ob)
+    state_rewards = Counter()
+    for ob in obs:
+        for state, _, reward in ob:
+            state_rewards.update({state: reward})
 
     # count state and reward observations
     for ob in obs:
-        for step in ob:
-            # REWARD TRACKER:
-            state, action, reward = step
-
-            # increment cumulative reward for observed state
-            rcount[state][0] += reward
-            # increment state visits count
-            rcount[state][1] += 1
-
-            # PROBABILITY TRANSITION TRACKER
-            # increment count of transitions, C_sa[s']
         for (state, action, _), (next_state, _, _) in zip(ob[:-1], ob[1:]):
             pcount[state][action][next_state] += 1
 
     # compute R[s]
-    R = [rcount[i][0]/rcount[i][1] if (rcount[i][1]) else (0)
+    R = [state_rewards[i]/state_visits[i] if state_visits[i] else 0
          for i in range(num_states)]
 
     # P[initial_state][action][dest_state] = probability
