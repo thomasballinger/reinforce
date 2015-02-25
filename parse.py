@@ -24,18 +24,18 @@ def obs_with_rewards(obs, R):
 def number_states_and_actions(obs):
     """Augment 3D obs array with states and actions
 
-    Returns state map and actions map, and adds states and actions to obs"""
+    Returns state map, actions map and version of obs using these"""
 
     stateMap = get_state_map(obs)
     state_num = {s: i for i, s in enumerate(stateMap)}
     actionMap = get_action_map(obs)
     action_num = {a: i for i, a in enumerate(actionMap)}
 
-    obs = [[[state_num[state], action_num[action], reward]
-            for state, action, reward in ob]
-           for ob in obs]
+    obs_with_ints = [[[state_num[state], action_num[action], reward]
+                     for state, action, reward in ob]
+                     for ob in obs]
 
-    return stateMap, actionMap, obs
+    return stateMap, actionMap, obs_with_ints
 
 
 def get_action_map(obs):

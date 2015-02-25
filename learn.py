@@ -18,10 +18,8 @@ def learn(obs, gamma=1, R=None):
         obs = par.obs_with_rewards(obs, R)
     stateMap, actMap, obs = par.number_states_and_actions(obs)
 
-    model = mod.model(len(stateMap), len(actMap), obs)
+    P, R = mod.model(len(stateMap), len(actMap), obs)
 
-    P = model[0]
-    R = model[1]
     policy = sol.policy(P, gamma, R)
 
     # map integer policy and action back to
@@ -30,7 +28,7 @@ def learn(obs, gamma=1, R=None):
         strat[stateMap[i]] = actMap[policy[i]]
 
     # return strategy, transition matrix, reward
-    results = [strat, model[0], model[1], stateMap]
+    results = [strat, P, R, stateMap]
     return results
 
 if __name__ == '__main__':
